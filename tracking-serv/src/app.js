@@ -26,13 +26,14 @@ app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cors());
 
-/**
- * Sends a simple welcome message to the client.
- */
-app.get("/", (req, res) => {
-  res.send({
-    message: "Welcome to the Tracking API!",
-  });
+app.post("/register", (req, res) => {
+  res.send(
+    "Hello\n" +
+      "Your Email is: " +
+      req.body.email +
+      "\nYour Password is: " +
+      req.body.password
+  );
 });
 
 /**
