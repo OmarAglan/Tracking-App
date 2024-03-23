@@ -4,59 +4,76 @@ import { ref } from 'vue';
 
 const username = ref('');
 const password = ref('');
+const error = ref(null);
 
 async function register() {
-  const response = await AuthenticationService.register({
-    username: username.value,
-    password: password.value,
-  });
-  // Handle registration response here (e.g., success message, redirect)
-  console.log(response.data);
+
+  try {
+    const response = await AuthenticationService.register({
+      username: username.value,
+      password: password.value,
+    });
+    // Handle successful registration (e.g., redirect)
+    console.log('Registration successful!', response.data);
+  } catch (err) {
+    // Handle error
+    error.value = err.response.data.error;
+    setTimeout(() => {
+      error.value = null;
+    }, 5000); // hide after 5 seconds
+  }
 }
 </script>
 <template>
-<div class="register-container">
-  <div class="register-form">
-    <h1>Register</h1>
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" v-model="username" placeholder="Username">
+  <div class="register-container">
+    <div class="register-form">
+      <h1>Register</h1>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" v-model="username" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" v-model="password" placeholder="Password">
+      </div>
+      <p v-if="error">{{ error }}</p>
+      <button type="button" @click="register">Register</button>
     </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" v-model="password" placeholder="Password">
-    </div>
-    <div class="terms">
-      <input type="checkbox" id="terms" name="terms">
-      <label for="terms"> By Registering You Accept the terms</label>
-    </div>
-    <button type="button" @click="register">Register</button>
   </div>
-  <div class="photo-holder">
-
-  </div>
-</div>
 </template>
 
 <style scoped>
+/* Base styles */
 .register-container {
-  display: flex; /* Make the container elements horizontal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* Fills viewport height */
 }
+
 .register-form {
-  border: 1px solid #ddd;
-  padding: 20px;
+  border: 1.5px solid #ddd;
+  padding: 30px;
   border-radius: 5px;
-  width: 300px;
-  margin: 0 auto;
+  display: flex;
+  /* Use flexbox for responsive layout */
+  flex-direction: column;
+  /* Stack elements vertically */
 }
 
 .form-group {
   margin-bottom: 15px;
+  display: flex;
+  /* Use flexbox for label & input alignment */
+  align-items: center;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 5px;
+  flex: 0 0 30%;
+  /* Fixed width for label */
 }
 
 .terms {
@@ -68,8 +85,9 @@ async function register() {
 }
 
 button {
-  background-color: #4CAF50; /* Green */
-  border: none;
+  background-color: #4CAF50;
+  /* Green */
+  border: springgreen;
   color: white;
   padding: 10px 20px;
   text-align: center;
@@ -79,19 +97,20 @@ button {
   margin-top: 10px;
   cursor: pointer;
   border-radius: 5px;
-}
-.photo-holder {
-  width: 150px; /* Adjust width as needed */
-  height: 150px; /* Adjust height as needed */
-  border: 1px dashed #ccc; /* Add a dashed border for placeholder effect */
-  margin-left: 20px; /* Add spacing between form and photo holder */
-  text-align: center; /* Center content within the holder */
-  line-height: 150px; /* Center text vertically within the holder */
+  width: 100%;
+  /* Button takes full width */
 }
 
-.photo-holder:before {
-  content: "Add Photo"; /* Text displayed inside the photo holder */
-  color: #ddd;
-  font-size: 0.8rem;
+/* Responsive Styles (for screens less than 768px wide) */
+@media (max-width: 768px) {
+  .register-form {
+    width: 80%;
+    /* Adjust form width for smaller screens */
+  }
+
+  .form-group label {
+    flex: 0 0 25%;
+    /* Adjust label width for smaller screens */
+  }
 }
 </style>
