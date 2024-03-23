@@ -1,13 +1,25 @@
 <script setup>
+/**
+ * Imports the AuthenticationService for handling user authentication.
+ * Imports ref from Vue for using reactive variables.
+*/
 import AuthenticationService from '@/services/AuthenticationService';
 import { ref } from 'vue';
 
+/**
+ * username: Reactive reference to the username input.
+ * password: Reactive reference to the password input. 
+ * error: Reactive reference to hold any error message.
+*/
 const username = ref('');
 const password = ref('');
 const error = ref(null);
 
+/**
+ * Registers a new user by calling the AuthenticationService.
+ * Handles the response and any errors.
+*/
 async function register() {
-
   try {
     const response = await AuthenticationService.register({
       username: username.value,
@@ -18,9 +30,13 @@ async function register() {
   } catch (err) {
     // Handle error
     error.value = err.response.data.error;
+    /**
+    * Sets a timeout to clear the error message after 6 seconds.
+    * This avoids the error persisting on screen indefinitely after being handled.
+    */
     setTimeout(() => {
       error.value = null;
-    }, 5000); // hide after 5 seconds
+    }, 6000); // hide after 6 seconds
   }
 }
 </script>

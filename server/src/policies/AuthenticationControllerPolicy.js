@@ -1,5 +1,14 @@
+/**
+ * Requires the joi module for input validation.
+ */
 const joi = require('joi')
 
+/**
+ * Validates user registration input using Joi.
+ * Checks username and password against specified rules.
+ * Returns 400 error responses for validation failures,
+ * otherwise calls next() if validation passes.
+ */
 module.exports = {
   register (req, res, next) {
     const schema = joi.object({
