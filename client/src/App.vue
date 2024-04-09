@@ -1,40 +1,14 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/register">Register</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-    </nav>
-  </header>
+  <v-tabs bg-color="indigo-darken-2" fixed-tabs>
+    <v-tab to="/"> Home </v-tab>
+    <v-tab to="/register"> Register </v-tab>
+    <v-tab to="/about"> About </v-tab>
+  </v-tabs>
   <RouterView />
 </template>
 
-<style scoped>
-#app {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 768px) {
-  #app {
-    flex-direction: row;
-  }
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-
-  padding: 1rem;
-  /* Example: add padding */
-}
-</style>
+<style scoped></style>
