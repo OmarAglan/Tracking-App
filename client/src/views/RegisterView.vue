@@ -14,6 +14,7 @@ import { ref } from 'vue';
 const username = ref('');
 const password = ref('');
 const error = ref(null);
+const success = ref(null);
 
 /**
  * Registers a new user by calling the AuthenticationService.
@@ -25,6 +26,7 @@ async function register() {
       username: username.value,
       password: password.value,
     });
+    success.value = response.data.message;
     // Handle successful registration (e.g., redirect)
     console.log('Registration successful!', response.data);
   } catch (err) {
@@ -44,75 +46,36 @@ async function register() {
 <template>
   <!-- Register -->
   <div>
-    <v-img class="mx-auto my-6" max-width="228" src="../assets/images/register.jpg" alt="Register">
-
-    </v-img>
+    <br>
     <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg">
       <div class="text-subtitle-1 text-medium-emphasis">User Name</div>
 
       <v-text-field density="compact" placeholder="User Name" prepend-inner-icon="mdi-account-outline"
-        variant="outlined"></v-text-field>
+        variant="outlined" v-model="username"></v-text-field>
 
       <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
         Password
-
-        <a class="text-caption text-decoration-none text-blue" href="#" rel="noopener noreferrer" target="_blank">
-          Forgot login password?</a>
       </div>
 
       <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :type="visible ? 'text' : 'password'"
         density="compact" placeholder="Enter your password" prepend-inner-icon="mdi-lock-outline" variant="outlined"
-        @click:append-inner="visible = !visible"></v-text-field>
+        @click:append-inner="visible = !visible" v-model="password"></v-text-field>
 
       <v-card class="mb-12" color="surface-variant" variant="tonal">
-        <v-card-text class="text-medium-emphasis text-caption">
-          Warning: After 3 consecutive failed login attempts, you account will
-          be temporarily locked for three hours. If you must login now, you can
-          also click "Forgot login password?" below to reset the login password.
-        </v-card-text>
+        <p v-if="error">{{ error }}</p>
+        <p v-if="success">{{ success }}</p>
       </v-card>
 
-      <v-btn class="mb-8" color="blue" size="large" variant="tonal" block>
-        Log In
+      <v-btn class="mb-8" color="blue" size="large" variant="tonal" block @click="register()">
+        Sign Up
       </v-btn>
 
       <v-card-text class="text-center">
         <a class="text-blue text-decoration-none" href="#" rel="noopener noreferrer" target="_blank">
-          Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
+          Sign In now <v-icon icon="mdi-chevron-right"></v-icon>
         </a>
       </v-card-text>
     </v-card>
-  </div>
-  <!-- This is a reference snippet of code from client\src\views\RegisterView.vue: -->
-  <v-form v-model="valid">
-    <v-container>
-      <v-row align="center" style="height: 500px" no-gutters>
-        <v-col>
-          <v-text-field v-model="username" :counter="10" :rules="nameRules" label="User Name" required></v-text-field>
-        </v-col>
-        <v-col>
-          <v-text-field v-model="password" :counter="10" :rules="passwordRules" label="Password"
-            required></v-text-field>
-        </v-col>
-      </v-row>
-      <v-btn block variant="tonal">Register</v-btn>
-    </v-container>
-
-  </v-form>
-  <div class="register-container">
-    <div class="register-form">
-      <h1>Register</h1>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" v-model="username" placeholder="Username">
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" v-model="password" placeholder="Password">
-      </div>
-      <p v-if="error">{{ error }}</p>
-      <button type="button" @click="register">Register</button>
-    </div>
   </div>
 </template>
 
