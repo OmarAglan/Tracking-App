@@ -14,7 +14,7 @@ import { ref } from 'vue';
 const username = ref('');
 const password = ref('');
 const error = ref(null);
-const success = ref(null);
+const message = ref(null);
 
 /**
  * Registers a new user by calling the AuthenticationService.
@@ -26,9 +26,15 @@ async function register() {
       username: username.value,
       password: password.value,
     });
-    success.value = response.data.message;
+    if (response.status === 200) {
+      message.value = 'Registration successful!';
+    }
+
     // Handle successful registration (e.g., redirect)
     console.log('Registration successful!', response.data);
+    setTimeout(() => {
+      message.value = null;
+    }, 7000); // hide after 7 seconds
   } catch (err) {
     // Handle error
     error.value = err.response.data.error;
@@ -38,7 +44,7 @@ async function register() {
     */
     setTimeout(() => {
       error.value = null;
-    }, 6000); // hide after 6 seconds
+    }, 7000); // hide after 7 seconds
   }
 }
 </script>
@@ -62,8 +68,15 @@ async function register() {
         @click:append-inner="visible = !visible" v-model="password"></v-text-field>
 
       <v-card class="mb-12" color="surface-variant" variant="tonal">
-        <p v-if="error">{{ error }}</p>
-        <p v-if="success">{{ success }}</p>
+        <v-alert v-if="message" text="" title="Register Success" type="success">
+          <p>You Can Sign In Now</p>
+          <p>{{ success }}</p>
+        </v-alert>
+
+        <v-alert v-if="error" text='' title="Register Fail" type="error">
+          <p>{{ error }}</p>
+        </v-alert>
+
       </v-card>
 
       <v-btn class="mb-8" color="blue" size="large" variant="tonal" block @click="register()">

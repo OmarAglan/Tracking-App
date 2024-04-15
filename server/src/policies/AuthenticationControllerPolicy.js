@@ -27,7 +27,8 @@ module.exports = {
       switch (validation.error.details[0].context.key) {
         case 'username':
           res.status(400).send({
-            error: 'Username is required'
+            error: 'Username is required <br> or Are Already In Use'
+
           })
           break
         case 'password':
