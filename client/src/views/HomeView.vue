@@ -3,9 +3,9 @@
 
 <template>
   <v-layout>
-    <v-main :min-height="$vuetify.display.mdAndUp ? 800 : 550" class="bg-blue-darken-4">
-      <v-container class="h-screen d-flex align-center justify-center">
-        <div class="w-100 w-md-50 text-center">
+    <v-main class="w-auto">
+      <v-container class="h-screen w-auto d-flex align-center justify-center">
+        <div class="w-auto w-md-50 text-center">
           <v-chip border="thin opacity-25" color="surface" variant="flat">
             <span class="hidden-sm-and-down">Our Tasks Tracker Has Been Released. </span> Click <a class="d-inline-block mx-1 text-decoration-none text-primary" href="/login">here</a> to Try It.
           </v-chip>
@@ -39,9 +39,7 @@
           </div>
         </div>
 
-        <div class="v-bg position-absolute top-0 right-0 left-0 bottom-0">
-          <div aria-hidden="true" class="overflow-hidden opacity-20 w-100 h-100" />
-        </div>
+
       </v-container>
     </v-main>
   </v-layout>
